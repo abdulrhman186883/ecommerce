@@ -1,4 +1,4 @@
-import { productModel } from "../models/prodectModel.js";
+import { productModel } from "../models/productModel.js";
 
 
 
@@ -9,7 +9,7 @@ export const getAllProducts = async() => {
 
 export const seedInstialProducts = async () => {
     const products = [
-        {title: "Product 1", image: "image.jpg", price: 10 , stock: 100},
+        {title: "Product 12", image: "image.jpg", price: 10 , stock: 100},
         
     ]
 
