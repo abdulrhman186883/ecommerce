@@ -7,9 +7,9 @@ import type { IProduct } from "./productModel.js";
 const CartStatusEnum = ["active", "completed"]
 
 
-export interface IcartItem extends Document {
+export interface IcartItem  {
     product: IProduct;
-    unutPrice: number;
+    unitPrice: number;
     quantity: number;
 }
 
@@ -29,7 +29,7 @@ const CartItemSchema: Schema = new Schema<IcartItem>(
   {
      product: { type: Schema.Types.ObjectId, ref: "Product", required: true},
      quantity: {type: Number, required: true, default: 1},
-     unutPrice: {type: Number, required: true},
+     unitPrice: {type: Number, required: true},
 
   }
 );
