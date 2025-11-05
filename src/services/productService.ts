@@ -7,6 +7,7 @@ export const getAllProducts = async() => {
 }
 
 
+
 export const seedInstialProducts = async () => {
     const products = [
         {title: "Product 12", image: "image.jpg", price: 10 , stock: 100},

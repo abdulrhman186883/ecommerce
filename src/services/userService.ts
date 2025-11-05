@@ -1,3 +1,5 @@
+
+import "dotenv/config";
 import { UserModel } from "../models/userModel.js"; 
 import bycrpt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -56,6 +58,7 @@ export const login = async (prams: LoginParams) => {
 }
 
 
-const generateJWT = (data: any) => { 
-  return jwt.sign(data, "oK1294959932948Fck812911012i", {expiresIn: "24h"});
+const generateJWT = (data: any) => {
+  console.log("JWT_SECRET:",process.env.JWT_SECRET); 
+  return jwt.sign(data, process.env.JWT_SECRET || '', {expiresIn: "24h"});
 }
