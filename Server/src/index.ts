@@ -5,11 +5,12 @@ import userRoute from "./routes/userRoute.js";
 import { seedInstialProducts } from "./services/productService.js";
 import productRoute from "./routes/productRoute.js"
 import cartRoute from "./routes/cartRoute.js"
-
+import cors from "cors"
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
+app.use(cors())
 mongoose
   .connect("mongodb://localhost:27017/ecommerce")
   .then(() => console.log("✅ Connected to MongoDB"))
