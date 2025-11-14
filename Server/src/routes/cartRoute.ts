@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/", validateJWT, async (req: ExtendRequest, res) => {
   try {
     const userId = req.user._id;
-    const cart = await getActiveCartforUser({ userId });
+    const cart = await getActiveCartforUser({ userId, populateProduct: true });
     res.status(200).send(cart);
   } catch (error) {
     console.error("Error fetching cart:", error);

@@ -15,11 +15,23 @@ const createCartForUser  = async ({userId} : CreateCartForUser)  => {
 
 interface GetActiveCartForUSer {
     userId: string;
+    populateProduct?: boolean;
 }
 
 
-export const getActiveCartforUser = async ({userId}: GetActiveCartForUSer) => {
-    let cart = await cartModel.findOne({userId, status: "active"}) 
+export const getActiveCartforUser = async ({
+    userId,
+    populateProduct
+
+
+}: GetActiveCartForUSer) => {
+    let cart;
+    if(populateProduct){
+    cart = await cartModel.findOne({userId, status: "active"}).populate('items.product')
+    } else {
+        cart = await cartModel.findOne({userId, status: "active"})
+    }
+    
 
 
     if(!cart){
@@ -75,9 +87,9 @@ export const addItemToCart = async ({productId, quantity, userId}: AdditemToCart
 
     cart.totalAmount += product.price * parseInt(quantity);
     
-    const updatedCart = await cart.save();
+    await cart.save();
 
-    return {data: updatedCart, statusCode: 200}
+    return {data: await getActiveCartforUser({userId,populateProduct: true}), statusCode: 200}
 }
 
 interface UpdateitemInCart{
@@ -115,10 +127,10 @@ export const updateItemInCart = async ({productId, quantity, userId}: Updateitem
     existsInCart.quantity = parseInt(quantity);
 
     cart.totalAmount = total;
-    const updatedCart = await cart.save();
+    await cart.save();
     
 
-    return {data: updatedCart, statusCode: 200};
+    return {data: await getActiveCartforUser({userId,populateProduct: true}), statusCode: 200};
 }
 
 
