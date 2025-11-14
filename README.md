@@ -1,14 +1,14 @@
-
-
 🛒 MERN E-Commerce Store
 
-A full-stack e-commerce application built using the MERN stack (MongoDB, Express.js, React, Node.js).
-Features full authentication, product management, and a complete shopping cart system.
+A full-stack e-commerce web application built with the MERN stack (MongoDB, Express.js, React, Node.js).
+It includes full authentication, product browsing, and a complete shopping cart system with real backend logic.
 
 🚀 Tech Stack
 Frontend
 
-React + Vite
+React (Vite)
+
+React Router
 
 Context API (Auth + Cart)
 
@@ -16,61 +16,154 @@ Material UI
 
 Fetch API (REST)
 
-React Router
-
 Backend
 
 Node.js
 
 Express.js
 
-MongoDB + Mongoose
+MongoDB & Mongoose
 
 JWT Authentication
 
 Bcrypt Password Hashing
 
 📦 Features
-🔐 Authentication
+🔐 User Authentication
 
-User registration
+Register new users
 
 Login with JWT
 
 Protected routes
 
-Persistent login using Context + LocalStorage
+Automatic token saving (LocalStorage)
 
-🛍️ Product System
+🛍️ Products
 
-Fetch all products
+Fetch and display all products
 
-Product details
+Product details (title, price, image)
 
-Clean UI using Material UI components
+🛒 Shopping Cart
 
-🛒 Cart System
+Add items to cart
 
-Full shopping cart with:
+Prevent duplicate items
 
-Add item to cart
+Update quantity
 
-Update item quantity
+Delete items
 
-Remove item
+Auto-calculate subtotal & total
 
-Auto-calculate total price
+Cart saved per user (MongoDB)
 
-Prevent adding the same item twice
+Product population via populate('items.product')
 
-MongoDB-based cart linked to user
+💳 Checkout
 
-Uses populate() to load product details
+Creates a real order in MongoDB
 
-📦 Checkout
+Clears the cart after checkout
 
-Creates an order with items, quantity, and total
+Order contains product details, quantity, and total
 
-Clears cart on success
+📂 Folder Structure
+/frontend
+  /src
+    /components
+    /context
+    /pages
+    app.tsx
 
-Order
+/backend
+  /src
+    /routes
+    /controllers
+    /services
+    /models
+    index.ts
+
+📑 API Endpoints
+Auth
+POST /user/register
+POST /user/login
+
+Products
+GET /products
+
+Cart
+POST   /cart/items
+PATCH  /cart/items
+DELETE /cart/items
+GET    /cart
+POST   /cart/checkout
+
+🔧 Installation & Setup
+1. Clone the repo
+git clone https://github.com/<your-username>/<repo-name>.git
+cd <repo-name>
+
+2. Backend Setup
+cd backend
+npm install
+npm run dev
+
+3. Frontend Setup
+cd frontend
+npm install
+npm run dev
+
+🔑 Environment Variables
+
+Create a .env file inside the backend folder:
+
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=3001
+
+🧪 Postman Testing
+Register
+{
+  "firstName": "Zak",
+  "lastName": "Abdullah",
+  "email": "zak@test.com",
+  "password": "123456"
+}
+
+Login
+{
+  "email": "zak@test.com",
+  "password": "123456"
+}
+
+
+Use the returned token as:
+
+Authorization: Bearer <your_token>
+
+📌 Roadmap (Future Features)
+
+Admin dashboard
+
+Product creation & editing
+
+Order history page
+
+Stripe/PayPal payments
+
+Product categories
+
+Image uploads
+
+Dark mode
+
+👨‍💻 Author
+
+Abdalrhman Abdullah
+MERN Stack Developer | HCI Bauhaus 
+Germany / Egypt
+
+
+
