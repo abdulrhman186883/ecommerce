@@ -147,8 +147,40 @@ try{
     }
     }
 
+    const clearCart  = async () => {
+        try{
+    const response = await fetch(`http://localhost:3001/cart/`, {
+         
+        method: "DELETE",
+        headers: {
+            
+            "Authorization": `Bearer ${token}`
+        },
+        
+        });
+        if(!response.ok){
+        setError('Failed to delete from cart');
+        }
+
+
+        const cart = await response.json();
+        if(!cart){
+            setError("failed to parse cart data")
+        }
+
+        const cartItemsMapped = cart.items.map(({product ,quantity, unitPrice} : any) => 
+            ({productId: product._id, title: product.title, image: product.image, quantity, unitPrice: unitPrice}))
+        setCartItems([])
+        setTotalAmout(0)
+
+    } catch (error) {
+        console.error(error)
+
+    }
+    }
+
     return(
-        <CartContext.Provider value = {{cartItems, totalAmount, addItemToCart, updateIteminCart, RemoveItemInCart}}>
+        <CartContext.Provider value = {{cartItems, totalAmount, addItemToCart, updateIteminCart, RemoveItemInCart, clearCart}}>
             {children}
         </CartContext.Provider>
     )

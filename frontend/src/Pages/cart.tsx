@@ -9,7 +9,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 const CartPage = () => {
   const { token } = useAuth();
-  const {cartItems, totalAmount , updateIteminCart , RemoveItemInCart} = useCart()
+  const {cartItems, totalAmount , updateIteminCart , RemoveItemInCart, clearCart} = useCart()
   const [cart, setCart] = useState(null);
   const [error, setError] = useState("");
 
@@ -22,6 +22,7 @@ const CartPage = () => {
 
  updateIteminCart(productId, quantity)
  }
+
 
 
  const handleRemoveItem  = (productId: string) => {
@@ -107,6 +108,30 @@ const CartPage = () => {
       Total Amount: {totalAmount} EUR
     </Typography>
   </Box>
+
+
+ {/* ACTION BUTTON (depends on cart state) */}
+<Box mt={3} display="flex" justifyContent="center">
+  {cartItems.length === 0 ? (
+    <Button
+      color="primary"
+      variant="contained"
+      onClick={() => window.location.href = "/"}
+      sx={{ px: 4, py: 1.2, fontSize: "1rem" }}
+    >
+      Go Shopping 🛍️
+    </Button>
+  ) : (
+    <Button
+      color="error"
+      variant="outlined"
+      onClick={() => clearCart()}
+      sx={{ px: 4, py: 1.2, fontSize: "1rem" }}
+    >
+      Clear Cart
+    </Button>
+  )}
+</Box>
     </Container>
   );
 };
