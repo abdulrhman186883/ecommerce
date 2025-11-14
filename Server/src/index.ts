@@ -24,7 +24,7 @@ seedInstialProducts()
 app.use('/user', userRoute);
 app.use('/product',productRoute);
 app.use('/cart',cartRoute);
-app.use('/cart',cartRoute)
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

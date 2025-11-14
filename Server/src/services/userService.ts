@@ -3,6 +3,7 @@ import "dotenv/config";
 import { UserModel } from "../models/userModel.js"; 
 import bycrpt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { orderModel } from "../models/orderModel.js";
 
 interface RegisterParams {
   firstName: string;
@@ -56,6 +57,20 @@ export const login = async (prams: LoginParams) => {
       return {statusCode: 401, data: "Invalid credentials"};
     }
 }
+
+interface GetMyOrdersParams{
+  userId: string;
+}
+export const getMyOrders = async ({ userId }: GetMyOrdersParams) => {
+  try {
+    const orders = await orderModel.find({ userId }).lean(); // ✅ lean() removes Mongoose wrappers
+
+    return { statusCode: 200, data: orders };
+  } catch (err) {
+    console.error("getMyOrders failed:", err);
+    throw err;
+  }
+};
 
 
 const generateJWT = (data: any) => {

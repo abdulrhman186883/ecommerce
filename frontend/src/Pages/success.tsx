@@ -97,7 +97,7 @@ const CheckoutPage = () => {
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => navigate("/orders")}
+          onClick={() => navigate("/myorder")}
           sx={{ px: 4 }}
         >
           View Orders

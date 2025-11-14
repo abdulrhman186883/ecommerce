@@ -47,6 +47,11 @@ navigate('/cart')
     setAnchorElUser(null);
   };
 
+  const handleMyOrders = () => {
+    navigate('/myorder');
+    handleCloseUserMenu();
+    
+  }
 
   return (
     <AppBar position="static">
@@ -118,7 +123,7 @@ navigate('/cart')
               onClose={handleCloseUserMenu}
             >
               
-                <MenuItem  onClick={handleCloseUserMenu}>
+                <MenuItem  onClick={handleMyOrders}>
                   <Typography sx={{ textAlign: 'center' }}>My orders</Typography>
                   </MenuItem>
                   <MenuItem  onClick={handlelogout}>

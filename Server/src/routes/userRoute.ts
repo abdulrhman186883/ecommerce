@@ -1,6 +1,8 @@
-import express from "express";
-import { login, register } from "../services/userService.js";
+import express, { response } from "express";
+import { login, register , getMyOrders } from "../services/userService.js";
+import validateJWT from "../middlewares/validateJWT.js";
 
+import type {ExtendRequest}  from "../types/extendedRequests.js"
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -22,6 +24,19 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Error during user login:", error);
     res.status(500).send("Server error during login");
+  }
+});
+
+router.get('/myorders', validateJWT, async (req: ExtendRequest, res) => {
+  try {
+    const userId = req.user?._id;
+
+    const { statusCode, data } = await getMyOrders({ userId });
+
+    return res.status(statusCode).json(data);  // <-- FIXED
+  } catch (error) {
+    console.error("MyOrders error:", error);
+    return res.status(500).send("Something is wrong");
   }
 });
 
