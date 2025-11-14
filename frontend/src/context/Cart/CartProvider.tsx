@@ -26,8 +26,8 @@ const [error, setError] = useState('');
         }
 
         const cart = await response.json();
-        const cartItemsMapped = cart.items.map(({product ,quantity} : any) => 
-            ({productId: product._id, title: product.title, image: product.image, quantity, unitPrice: product.unitPrice}))
+        const cartItemsMapped = cart.items.map(({product ,quantity , unitPrice} : any) => 
+            ({productId: product._id, title: product.title, image: product.image, quantity, unitPrice: unitPrice}))
         setCartItems([...cartItemsMapped])
         setTotalAmout(cart.totalAmount)
         setCartItems(cartItemsMapped);
