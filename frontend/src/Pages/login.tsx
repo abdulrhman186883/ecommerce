@@ -6,19 +6,17 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useAuth } from "../context/Auth/Authcontext";
 import { useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
-  
- 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [generalError, setGeneralError] = useState("");
-  const navigate = useNavigate();
-  const {login} = useAuth();
-  
 
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -29,7 +27,6 @@ const LoginPage = () => {
     setEmailError("");
     setGeneralError("");
 
-   
     const email = emailRef.current?.value?.trim();
     const password = passwordRef.current?.value?.trim();
 
@@ -42,37 +39,34 @@ const LoginPage = () => {
       const response = await fetch("http://localhost:3001/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({  email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
-      const token = await response.json();
+      const data = await response.json(); 
+
+      console.log("🔥 Login Response:", data);
 
       if (!response.ok) {
-        // handle backend errors
-        login(email ?? "", token.data);
-        if (response.status === 409) {
-          setErrorMessage("User already exists with this email.");
-        } else if (token?.message) {
-          setErrorMessage(token.message);
+        // Show backend error
+        if (data?.message) {
+          setErrorMessage(data.message);
         } else {
-          setErrorMessage("Something went wrong during login");
+          setErrorMessage("Invalid email or password.");
         }
         return;
       }
 
+      
+      login(email, data.data);  
+      console.log("Logged in. Token:", data.data);
 
-      login(email, token);
-      navigate('/');
-        
+      alert("Account logged in successfully!");
+      navigate("/");
 
-      console.log("loged in:", token);
-      alert("Account Loged in successfully!");
     } catch (error) {
-      console.error("Registration error:", error);
-      setGeneralError("Server connection error. Please try again later.");
+      console.error("Login error:", error);
+      setGeneralError("Server error. Please try again later.");
     }
-
-    
   };
 
   return (
@@ -86,7 +80,7 @@ const LoginPage = () => {
     >
       <Container sx={{ textAlign: "center", maxWidth: 400 }}>
         <Typography variant="h4" fontWeight="bold" gutterBottom>
-          login to your Account
+          Login to your Account
         </Typography>
 
         <Box
@@ -97,7 +91,6 @@ const LoginPage = () => {
             mt: 2,
           }}
         >
-          
           <TextField
             inputRef={emailRef}
             label="Email"
@@ -119,7 +112,7 @@ const LoginPage = () => {
           )}
 
           <Button onClick={onSubmit} variant="contained" color="primary">
-            login
+            Login
           </Button>
         </Box>
       </Container>

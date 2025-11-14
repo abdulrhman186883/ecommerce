@@ -2,6 +2,7 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -14,7 +15,7 @@ import { useAuth } from '../context/Auth/Authcontext';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-
+import Badge from '@mui/material/Badge';
 
 function Navbar() {
   const {username, isAuthenticated, logout} = useAuth();
@@ -30,6 +31,10 @@ const handlelogout = () => {
   navigate('/')
   handleCloseUserMenu()
 }
+
+const handlecart = () => [
+navigate('/cart')
+]
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -66,7 +71,14 @@ const handlelogout = () => {
           <Box sx={{ flexGrow: 1 }} />
 
           {/* Avatar & User Menu */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: "flex" , flexDirection: "row" , flexGrow: 0 }} gap={4} alignItems={'center'}>
+           <IconButton aria-label="cart" onClick={handlecart}>
+            <Badge badgeContent={4} color="secondary" overlap="rectangular">
+              <ShoppingCartIcon sx={{color: '#ffffff'}}/>
+            </Badge>
+          </IconButton>
+
+
             {isAuthenticated ? 
             <>
              <Tooltip title="Open settings">
