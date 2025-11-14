@@ -6,12 +6,13 @@ import { useCart } from "../context/Cart/CartContext";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-
+import { useNavigate } from "react-router-dom";
 const CartPage = () => {
   const { token } = useAuth();
   const {cartItems, totalAmount , updateIteminCart , RemoveItemInCart, clearCart} = useCart()
   const [cart, setCart] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
  const handleQuantity = (productId: string, quantity: number) => {
  if (quantity <= 0){
@@ -110,9 +111,10 @@ const CartPage = () => {
   </Box>
 
 
- {/* ACTION BUTTON (depends on cart state) */}
-<Box mt={3} display="flex" justifyContent="center">
+ {/* ACTION BUTTONS */}
+<Box mt={3} display="flex" justifyContent="center" gap={2}>
   {cartItems.length === 0 ? (
+    // EMPTY CART → only show Go Shopping
     <Button
       color="primary"
       variant="contained"
@@ -122,14 +124,27 @@ const CartPage = () => {
       Go Shopping 🛍️
     </Button>
   ) : (
-    <Button
-      color="error"
-      variant="outlined"
-      onClick={() => clearCart()}
-      sx={{ px: 4, py: 1.2, fontSize: "1rem" }}
-    >
-      Clear Cart
-    </Button>
+    <>
+      {/* Go to Checkout */}
+      <Button
+        color="primary"
+        variant="contained"
+         onClick={() => navigate("/checkout")}
+        sx={{ px: 4, py: 1.2, fontSize: "1rem" }}
+      >
+        Go to Checkout 🛒
+      </Button>
+
+      {/* Clear Cart */}
+      <Button
+        color="error"
+        variant="outlined"
+        onClick={() => clearCart()}
+        sx={{ px: 4, py: 1.2, fontSize: "1rem" }}
+      >
+        Clear Cart
+      </Button>
+    </>
   )}
 </Box>
     </Container>
