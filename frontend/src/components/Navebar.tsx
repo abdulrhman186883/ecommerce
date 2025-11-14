@@ -11,12 +11,19 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useAuth } from '../context/Auth/Authcontext';
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+
 
 function Navbar() {
-  const {username, token} = useAuth();
+  const {username, isAuthenticated} = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+const navigate = useNavigate();
+const handlelogin = () => {
+  navigate('/login');
 
+}
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -25,7 +32,7 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
-console.log("from navbar", {username, token})
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -54,10 +61,22 @@ console.log("from navbar", {username, token})
 
           {/* Avatar & User Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+            {isAuthenticated ? 
+            <>
+             <Tooltip title="Open settings">
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
+              <Grid>
+                <Typography sx={{ color: "white", fontWeight: 500 }}>
+                  {username}
+                </Typography>
+              </Grid>
+
+              <Grid>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={username || ""} src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Grid>
+            </Grid>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
@@ -75,12 +94,17 @@ console.log("from navbar", {username, token})
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+              
+                <MenuItem  onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>My orders</Typography>
+                  </MenuItem>
+                  <MenuItem  onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: 'center' }}> Logout </Typography>
                 </MenuItem>
-              ))}
+             
             </Menu>
+            </> : <Button variant='contained' color="success" onClick={handlelogin}> login</Button>}
+           
           </Box>
         </Toolbar>
       </Container>

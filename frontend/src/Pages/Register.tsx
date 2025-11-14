@@ -5,14 +5,14 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useAuth } from "../context/Auth/Authcontext";
-
+import { useNavigate } from "react-router-dom";
 const RegisterPage = () => {
   
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
+   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [generalError, setGeneralError] = useState("");
@@ -64,7 +64,7 @@ const RegisterPage = () => {
 
 
       login(email, token)
-
+      navigate("/")
 
 
       console.log("Registered:", token);
