@@ -16,11 +16,15 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
+import { useCart } from '../context/Cart/CartContext';
+
+
 
 function Navbar() {
   const {username, isAuthenticated, logout} = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-const navigate = useNavigate();
+  const { cartItems} = useCart();
+  const navigate = useNavigate();
 const handlelogin = () => {
   navigate('/login');
 
@@ -49,6 +53,7 @@ navigate('/cart')
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Logo */}
+          <Button variant="text" sx={{color: "#ffffff"}} onClick={()=>navigate('/')}>
           <AdbIcon sx={{ mr: 1 }} />
           <Typography
             variant="h6"
@@ -64,16 +69,16 @@ navigate('/cart')
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Laptops Store
           </Typography>
-
+      </Button>
           {/* Filler space to push avatar to right */}
           <Box sx={{ flexGrow: 1 }} />
 
           {/* Avatar & User Menu */}
           <Box sx={{ display: "flex" , flexDirection: "row" , flexGrow: 0 }} gap={4} alignItems={'center'}>
            <IconButton aria-label="cart" onClick={handlecart}>
-            <Badge badgeContent={4} color="secondary" overlap="rectangular">
+            <Badge badgeContent={cartItems.length} color="secondary" overlap="rectangular">
               <ShoppingCartIcon sx={{color: '#ffffff'}}/>
             </Badge>
           </IconButton>

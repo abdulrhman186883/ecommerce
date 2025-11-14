@@ -11,31 +11,7 @@ const CartPage = () => {
   const [cart, setCart] = useState(null);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/cart", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          setError("Failed to fetch user cart.");
-          return;
-        }
-
-        const data = await response.json();
-        setCart(data);
-      } catch (err) {
-        setError("Server error.");
-      }
-    };
-
-    if (token) fetchCart();
-  }, [token]); 
  
-  console.log({ cart });
 
   return (
     <Container sx={{ mt: 2 }}>
