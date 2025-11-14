@@ -4,8 +4,10 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useAuth } from "../context/Auth/Authcontext";
 
 const RegisterPage = () => {
+  
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -14,6 +16,10 @@ const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [generalError, setGeneralError] = useState("");
+
+  const {login} = useAuth();
+  
+
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -41,26 +47,34 @@ const RegisterPage = () => {
         body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
-      const data = await response.json();
+      const token = await response.json();
 
       if (!response.ok) {
         // handle backend errors
+        login(firstName ?? "", token.data);
         if (response.status === 409) {
           setErrorMessage("User already exists with this email.");
-        } else if (data?.message) {
-          setErrorMessage(data.message);
+        } else if (token?.message) {
+          setErrorMessage(token.message);
         } else {
           setErrorMessage("Something went wrong during registration.");
         }
         return;
       }
 
-      console.log("Registered:", data);
+
+      login(email, token)
+
+
+
+      console.log("Registered:", token);
       alert("Account created successfully!");
     } catch (error) {
       console.error("Registration error:", error);
       setGeneralError("Server connection error. Please try again later.");
     }
+
+    
   };
 
   return (
