@@ -6,11 +6,27 @@ import { useCart } from "../context/Cart/CartContext";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+
 const CartPage = () => {
   const { token } = useAuth();
-  const {cartItems, totalAmount} = useCart()
+  const {cartItems, totalAmount , updateIteminCart , RemoveItemInCart} = useCart()
   const [cart, setCart] = useState(null);
   const [error, setError] = useState("");
+
+ const handleQuantity = (productId: string, quantity: number) => {
+ if (quantity <= 0){
+  return
+ }
+
+ 
+
+ updateIteminCart(productId, quantity)
+ }
+
+
+ const handleRemoveItem  = (productId: string) => {
+  RemoveItemInCart(productId);
+ }
 
  
 
@@ -60,11 +76,20 @@ const CartPage = () => {
   {/* Quantity Controls */}
   <Box mx={2}>                  
     <ButtonGroup variant="contained" size="small">
-      <Button>+</Button>
-      <Button>-</Button>
+      <Button onClick={() => handleQuantity(item.productId, item.quantity +1 )}>+</Button>
+      <Button onClick={() => handleQuantity(item.productId, item.quantity -1 )}>-</Button>
     </ButtonGroup>
   </Box>
- 
+ <Box mx={2}>
+  <Button
+    color="error"
+    variant="outlined"
+    onClick={() => handleRemoveItem(item.productId)}
+    sx={{ minWidth: 40 }}
+  >
+    🗑️
+  </Button>
+</Box>
 </Box>
 
 

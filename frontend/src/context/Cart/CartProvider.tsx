@@ -76,10 +76,79 @@ const addItemToCart = async (productId: string) => {
     }
 }
 
+const updateIteminCart  = async (productId: string, quantity: number) => {
+try{
+    const response = await fetch("http://localhost:3001/cart/items", {
+         
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            productId,
+            quantity,
+            
+        })
+        });
+        if(!response.ok){
+        setError('Failed to update to cart');
+        }
+
+
+        const cart = await response.json();
+        if(!cart){
+            setError("failed to parse cart data")
+        }
+
+        const cartItemsMapped = cart.items.map(({product ,quantity, unitPrice} : any) => 
+            ({productId: product._id, title: product.title, image: product.image, quantity, unitPrice: unitPrice}))
+        setCartItems([...cartItemsMapped])
+        setTotalAmout(cart.totalAmount)
+
+    } catch (error) {
+        console.error(error)
+
+    }
+}
     
-    
+    const RemoveItemInCart = async (productId: string) => {
+try{
+    const response = await fetch(`http://localhost:3001/cart/items/${productId}`, {
+         
+        method: "DELETE",
+        headers: {
+            
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            productId,
+            
+        })
+        });
+        if(!response.ok){
+        setError('Failed to delete from cart');
+        }
+
+
+        const cart = await response.json();
+        if(!cart){
+            setError("failed to parse cart data")
+        }
+
+        const cartItemsMapped = cart.items.map(({product ,quantity, unitPrice} : any) => 
+            ({productId: product._id, title: product.title, image: product.image, quantity, unitPrice: unitPrice}))
+        setCartItems([...cartItemsMapped])
+        setTotalAmout(cart.totalAmount)
+
+    } catch (error) {
+        console.error(error)
+
+    }
+    }
+
     return(
-        <CartContext.Provider value={{cartItems, totalAmount, addItemToCart}}>
+        <CartContext.Provider value = {{cartItems, totalAmount, addItemToCart, updateIteminCart, RemoveItemInCart}}>
             {children}
         </CartContext.Provider>
     )

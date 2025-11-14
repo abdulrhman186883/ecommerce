@@ -163,10 +163,13 @@ const existsInCart = (await cart).items.find((p) => p.product.toString() === pro
 
     cart.items = otherCartItems;
     cart.totalAmount = total;
-    const updatedCart = await cart.save();
+    await cart.save();
     
-
-    return {data: updatedCart, statusCode: 200};
+    const populatedCart = await getActiveCartforUser({
+    userId,
+    populateProduct: true,
+  });
+    return {data: populatedCart, statusCode: 200};
  }
  
 
