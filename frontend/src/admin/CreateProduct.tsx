@@ -18,7 +18,7 @@ const CreateProduct: React.FC = () => {
       return;
     }
 
-    const res = await fetch("http://localhost:3001/product/admin/create", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/product/admin/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
