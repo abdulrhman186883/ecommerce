@@ -6,20 +6,19 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useAuth } from "../context/Auth/Authcontext";
 import { useNavigate } from "react-router-dom";
+
 const RegisterPage = () => {
-  
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-   const navigate = useNavigate();
+
   const [errorMessage, setErrorMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [generalError, setGeneralError] = useState("");
 
-  const {login} = useAuth();
-  
-
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -47,34 +46,42 @@ const RegisterPage = () => {
         body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
-      const token = await response.json();
+      const data = await response.json();
+
+      // 🔥 DEBUG LOGS YOU REQUESTED
+      console.log("FULL REGISTER RESPONSE:", data);
+      console.log("Token inside data.data ???", data.data);
+      console.log("Token inside data.token ???", data.token);
 
       if (!response.ok) {
-        // handle backend errors
-        login(firstName ?? "", token.data);
         if (response.status === 409) {
           setErrorMessage("User already exists with this email.");
-        } else if (token?.message) {
-          setErrorMessage(token.message);
+        } else if (data?.message) {
+          setErrorMessage(data.message);
         } else {
           setErrorMessage("Something went wrong during registration.");
         }
         return;
       }
 
+      // Token is MOST LIKELY inside data.data
+      const token = data.data;
 
-      login(email, token)
-      navigate("/")
+      if (!token) {
+        setGeneralError("Registration succeeded but token missing from server.");
+        return;
+      }
 
+      // Log the user in
+      login(email, "user", token);
 
-      console.log("Registered:", token);
       alert("Account created successfully!");
+      navigate("/");
+
     } catch (error) {
       console.error("Registration error:", error);
       setGeneralError("Server connection error. Please try again later.");
     }
-
-    
   };
 
   return (
@@ -99,21 +106,17 @@ const RegisterPage = () => {
             mt: 2,
           }}
         >
-          <TextField inputRef={firstNameRef} label="First Name" name="firstname" />
-          <TextField inputRef={lastNameRef} label="Last Name" name="lastname" />
+          <TextField inputRef={firstNameRef} label="First Name" />
+          <TextField inputRef={lastNameRef} label="Last Name" />
+
           <TextField
             inputRef={emailRef}
             label="Email"
-            name="email"
             error={!!emailError || !!errorMessage}
             helperText={emailError || errorMessage}
           />
-          <TextField
-            inputRef={passwordRef}
-            label="Password"
-            name="password"
-            type="password"
-          />
+
+          <TextField inputRef={passwordRef} label="Password" type="password" />
 
           {generalError && (
             <Typography color="error" variant="body2">

@@ -2,7 +2,7 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -18,27 +18,12 @@ import { useNavigate } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import { useCart } from '../context/Cart/CartContext';
 
-
-
 function Navbar() {
-  const {username, isAuthenticated, logout} = useAuth();
+  const { username, isAuthenticated, logout, role } = useAuth();
+  const { cartItems } = useCart();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const { cartItems} = useCart();
   const navigate = useNavigate();
-const handlelogin = () => {
-  navigate('/login');
 
-}
-
-const handlelogout = () => {
-  logout()
-  navigate('/')
-  handleCloseUserMenu()
-}
-
-const handlecart = () => [
-navigate('/cart')
-]
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -47,92 +32,109 @@ navigate('/cart')
     setAnchorElUser(null);
   };
 
+  const handleLogin = () => navigate('/login');
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+    handleCloseUserMenu();
+  };
+
   const handleMyOrders = () => {
     navigate('/myorder');
     handleCloseUserMenu();
-    
-  }
+  };
+
+  const handleCart = () => navigate('/cart');
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo */}
-          <Button variant="text" sx={{color: "#ffffff"}} onClick={()=>navigate('/')}>
-          <AdbIcon sx={{ mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#home"
-            sx={{
-              mr: 2,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Laptops Store
-          </Typography>
-      </Button>
-          {/* Filler space to push avatar to right */}
+
+          {/* LOGO */}
+          <Button variant="text" sx={{ color: "#ffffff" }} onClick={() => navigate('/')}>
+            <AdbIcon sx={{ mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                mr: 2,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+              }}
+            >
+              Laptops Store
+            </Typography>
+          </Button>
+
+          {/* PUSH CONTENT TO THE RIGHT */}
           <Box sx={{ flexGrow: 1 }} />
 
-          {/* Avatar & User Menu */}
-          <Box sx={{ display: "flex" , flexDirection: "row" , flexGrow: 0 }} gap={4} alignItems={'center'}>
-           <IconButton aria-label="cart" onClick={handlecart}>
-            <Badge badgeContent={cartItems.length} color="secondary" overlap="rectangular">
-              <ShoppingCartIcon sx={{color: '#ffffff'}}/>
-            </Badge>
-          </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center" }} gap={3}>
 
+            {/* CART BUTTON */}
+            <IconButton onClick={handleCart}>
+              <Badge badgeContent={cartItems.length} color="secondary">
+                <ShoppingCartIcon sx={{ color: '#ffffff' }} />
+              </Badge>
+            </IconButton>
 
-            {isAuthenticated ? 
-            <>
-             <Tooltip title="Open settings">
-              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
-              <Grid>
-                <Typography sx={{ color: "white", fontWeight: 500 }}>
-                  {username}
-                </Typography>
-              </Grid>
+            {/* ⭐ ADMIN BUTTON ONLY IF ROLE=ADMIN ⭐ */}
+            {role === "admin" && (
+              <Button
+                variant="contained"
+                color="warning"
+                onClick={() => navigate('/admin')}
+              >
+                Admin Panel
+              </Button>
+            )}
 
-              <Grid>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={username || ""} src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Grid>
-            </Grid>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              
-                <MenuItem  onClick={handleMyOrders}>
-                  <Typography sx={{ textAlign: 'center' }}>My orders</Typography>
+            {/* USER MENU */}
+            {isAuthenticated ? (
+              <>
+                <Tooltip title="Open settings">
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Typography sx={{ color: "white", fontWeight: 500 }}>
+                    {username}
+                  </Typography>
+
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={username || ""} src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                </Box>
+              </Tooltip>
+
+                {/* DROPDOWN MENU */}
+                <Menu
+                  sx={{ mt: "45px" }}
+                  anchorEl={anchorElUser}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleMyOrders}>
+                    <Typography>My Orders</Typography>
                   </MenuItem>
-                  <MenuItem  onClick={handlelogout}>
-                  <Typography sx={{ textAlign: 'center' }}> Logout </Typography>
-                </MenuItem>
-             
-            </Menu>
-            </> : <Button variant='contained' color="success" onClick={handlelogin}> login</Button>}
-           
+
+                  {/* ⭐ ADMIN DROPDOWN OPTION ⭐ */}
+                  {role === "admin" && (
+                    <MenuItem onClick={() => { navigate("/admin"); handleCloseUserMenu(); }}>
+                      <Typography>Admin Panel</Typography>
+                    </MenuItem>
+                  )}
+
+                  <MenuItem onClick={handleLogout}>
+                    <Typography>Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <Button variant="contained" color="success" onClick={handleLogin}>
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>

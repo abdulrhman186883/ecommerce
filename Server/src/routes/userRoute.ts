@@ -20,12 +20,22 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const { statusCode, data } = await login({ email, password });
-    res.status(statusCode).json({ data });
+
+    if (statusCode !== 200) {
+      return res.status(statusCode).json({ data });
+    }
+
+    res.status(200).json({
+      data: data.token,
+      role: data.role
+    });
+
   } catch (error) {
     console.error("Error during user login:", error);
     res.status(500).send("Server error during login");
   }
 });
+
 
 router.get('/myorders', validateJWT, async (req: ExtendRequest, res) => {
   try {

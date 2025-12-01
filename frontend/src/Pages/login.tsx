@@ -57,10 +57,15 @@ const LoginPage = () => {
       }
 
       
-      login(email, data.data);  
+      login(email, data.role, data.data);  
       console.log("Logged in. Token:", data.data);
 
-      alert("Account logged in successfully!");
+      if (data.role === "admin") {
+      alert("Admin logged in successfully!");
+    } else {
+      alert("Account user logged in successfully!");
+      console.log("🔥 Login Response:", data);
+    }
       navigate("/");
 
     } catch (error) {
@@ -115,6 +120,14 @@ const LoginPage = () => {
             Login
           </Button>
         </Box>
+        <Button
+        variant="text"
+        color="secondary"
+        onClick={() => navigate("/register")}
+        sx={{ mt: 1 }}
+      >
+        Don’t have an account? Register
+      </Button>
       </Container>
     </Box>
   );

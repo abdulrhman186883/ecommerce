@@ -41,22 +41,42 @@ interface LoginParams {
   password: string;
 }
 
-export const login = async (prams: LoginParams) => {
+export const login = async (params: LoginParams) => {
+  const finduser = await UserModel.findOne({ email: params.email });
 
-    const finduser = await UserModel.findOne({email: prams.email});
+  if (!finduser) {
+    return { 
+      statusCode: 404, 
+      data: { message: "User not found" }   // ALWAYS object
+    };
+  }
 
-    if(!finduser){
-      return {statusCode: 404, data: "User not found"};
+  const passwordMatch = await bycrpt.compare(params.password, finduser.password);
+
+  if (!passwordMatch) {
+    return { 
+      statusCode: 401, 
+      data: { message: "Invalid credentials" }  // ALWAYS object
+    };
+  }
+
+  // Generate JWT token
+  const token = generateJWT({
+    email: params.email,
+    firstName: finduser.firstName,
+    lastName: finduser.lastName,
+  });
+
+  return {
+    statusCode: 200,
+    data: {
+      token,           // ALWAYS object
+      role: finduser.role
     }
+  };
+};
 
-    const passwordMatch = await bycrpt.compare(prams.password, finduser.password);
-    if(passwordMatch){
 
-        return {statusCode: 200, data: generateJWT({email: prams.email, firstName: finduser.firstName, lastName: finduser.lastName})};
-    }else{
-      return {statusCode: 401, data: "Invalid credentials"};
-    }
-}
 
 interface GetMyOrdersParams{
   userId: string;
