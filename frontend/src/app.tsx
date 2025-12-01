@@ -6,7 +6,7 @@ import RegisterPage from "./Pages/Register";
 import AuthProvider from "./context/Auth/AuthProvider";
 import CartPage from "./Pages/cart";
 import ProtectedRoute from "./components/protectedRoute";
-import CartProvider from "./context/Cart/cartProvider";
+import CartProvider from "./context/Cart/CartProvider";
 import CheckoutPage from "./Pages/checkoutpage"
 import SuccessPage from "./Pages/success";
 import  OrdersPage from "./Pages/myorders"
