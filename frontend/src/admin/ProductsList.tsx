@@ -15,7 +15,7 @@ const ProductsList: React.FC = () => {
 
   // Fetch all products on mount
   useEffect(() => {
-    fetch("http://localhost:3001/product")
+    fetch("https://ecommerce-2j15.onrender.com/product")
       .then((res) => res.json())
       .then((data: Product[]) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
