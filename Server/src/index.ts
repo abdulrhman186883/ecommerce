@@ -18,8 +18,9 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Local Vite
-      "https://ecommerce-black-five-73.vercel.app", // Your Vercel production domain
+      "https://ecommerce-lxvaj8shl-abdulrhman186883s-projects.vercel.app",
+      "https://ecommerce-black-five-73.vercel.app",
+      "http://localhost:5173"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
