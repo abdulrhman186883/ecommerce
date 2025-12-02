@@ -9,7 +9,7 @@ const [products, setProducts] = useState<Product[]>([])
 
 
 useEffect(() =>{
-    fetch("http://localhost:3001/product").then(async (response)=>{
+    fetch("https://ecommerce-2j15.onrender.com/product").then(async (response)=>{
         const data = await response.json();
         console.log(data);
         setProducts(data);
