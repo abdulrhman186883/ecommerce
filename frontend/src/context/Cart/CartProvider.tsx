@@ -78,7 +78,7 @@ const addItemToCart = async (productId: string) => {
 
 const updateIteminCart  = async (productId: string, quantity: number) => {
 try{
-    const response = await fetch("http://localhost:3001/cart/items", {
+    const response = await fetch("https://ecommerce-2j15.onrender.com/cart/items", {
          
         method: "PUT",
         headers: {
@@ -114,7 +114,7 @@ try{
     
     const RemoveItemInCart = async (productId: string) => {
 try{
-    const response = await fetch(`http://localhost:3001/cart/items/${productId}`, {
+    const response = await fetch(`https://ecommerce-2j15.onrender.com/cart/items/${productId}`, {
          
         method: "DELETE",
         headers: {
@@ -149,7 +149,7 @@ try{
 
     const clearCart  = async () => {
         try{
-    const response = await fetch(`http://localhost:3001/cart/`, {
+    const response = await fetch(`https://ecommerce-2j15.onrender.com/cart/`, {
          
         method: "DELETE",
         headers: {
