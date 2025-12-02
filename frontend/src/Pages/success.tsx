@@ -26,7 +26,7 @@ const CheckoutPage = () => {
     setAddressError("");
 
     try {
-      const response = await fetch("http://localhost:3001/cart/checkout", {
+      const response = await fetch("https://ecommerce-2j15.onrender.com/cart/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
