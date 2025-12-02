@@ -18,7 +18,7 @@ const CreateProduct: React.FC = () => {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/product/admin/create`, {
+    const res = await fetch(`https://ecommerce-2j15.onrender.com/product/admin/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
