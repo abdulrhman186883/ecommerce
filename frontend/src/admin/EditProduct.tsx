@@ -36,7 +36,7 @@ const EditProduct: React.FC = () => {
       return;
     }
 
-    await fetch(`${import.meta.env.VITE_API_URL}/product/admin/update/${id}`, {
+    await fetch(`https://ecommerce-2j15.onrender.com/product/admin/update/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
