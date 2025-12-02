@@ -14,7 +14,7 @@ const [error, setError] = useState('');
  useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await fetch("http://localhost:3001/cart", {
+        const response = await fetch("https://ecommerce-2j15.onrender.com/cart", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
