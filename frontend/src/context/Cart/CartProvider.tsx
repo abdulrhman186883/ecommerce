@@ -42,7 +42,7 @@ const [error, setError] = useState('');
 
 const addItemToCart = async (productId: string) => {
     try{
-    const response = await fetch("http://localhost:3001/cart/items", {
+    const response = await fetch("https://ecommerce-2j15.onrender.com/cart/items", {
          
         method: "POST",
         headers: {
