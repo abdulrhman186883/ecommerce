@@ -28,7 +28,7 @@ const ProductsList: React.FC = () => {
       return;
     }
 
-    await fetch(`${import.meta.env.VITE_API_URL}/product/admin/delete/${id}`, {
+    await fetch(`https://ecommerce-2j15.onrender.com/product/admin/delete/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
