@@ -75,7 +75,9 @@ router.delete("/", validateJWT, async (req: ExtendRequest, res) => {
     res.status(500).send("Server error while clearing cart");
   }
 });
-
+router.get("/checkout", (req, res) => {
+  res.status(200).send({ message: "Checkout endpoint active" });
+});
 router.post("/checkout", validateJWT, async (req: ExtendRequest, res) => {
   try {
     const userId = req?.user?._id;
