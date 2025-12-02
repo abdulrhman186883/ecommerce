@@ -30,7 +30,7 @@ const OrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:3001/user/myorders", {
+        const response = await fetch("https://ecommerce-2j15.onrender.com/user/myorders", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
