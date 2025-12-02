@@ -40,7 +40,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/user/register`, {
+      const response = await fetch(`https://ecommerce-2j15.onrender.com/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, email, password }),
